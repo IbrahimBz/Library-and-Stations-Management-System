@@ -4,10 +4,6 @@
  */
 package org.library;
 
-/**
- *
- * @author Munzer
- */
 
 class BorrowRecord {
     String borrowerName;

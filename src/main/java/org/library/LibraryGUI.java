@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package org.library;
 
-/**
- *
- * @author Munzer
- */
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -22,17 +15,17 @@ public class LibraryGUI extends JFrame {
     private JTextArea reportArea;
 
     // لوحة الألوان الرسمية والأنيقة (Formal & Modern Palette)
-    private final Color PRIMARY_COLOR = new Color(38, 50, 56);     // أزرق داكن مطفأ (Slate / Charcoal)
-    private final Color ACCENT_COLOR = new Color(54, 72, 80);      // لون ثانوي متناسق
-    private final Color BG_LIGHT = new Color(248, 249, 250);       // خلفية ناعمة جداً ومريحة للعين
-    private final Color TEXT_DARK = new Color(44, 62, 80);         // لون نصوص داكن وواضح
-    private final Color CARD_BG = Color.WHITE;                      // خلفية البطاقات والبطاقات الداخلية
+    private final Color PRIMARY_COLOR = new Color(38, 50, 56);
+    private final Color ACCENT_COLOR = new Color(54, 72, 80);
+    private final Color BG_LIGHT = new Color(248, 249, 250);
+    private final Color TEXT_DARK = new Color(44, 62, 80);
+    private final Color CARD_BG = Color.WHITE;
 
     public LibraryGUI() {
         manager = new LibraryManager();
 
         setTitle("Digital Library Management System (Premium Edition)");
-        setSize(1000, 700); // زيادة الأبعاد قليلاً لراحة أكبر في توزيع العناصر
+        setSize(1000, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(BG_LIGHT);
@@ -76,6 +69,13 @@ public class LibraryGUI extends JFrame {
         JButton btnSearch = createSystemButton("Find Book");
         JButton btnClearSearch = new JButton("Clear Filter");
         styleSecondaryButton(btnClearSearch);
+        JButton btnBack = new JButton("→ العودة للرئيسية");
+
+        btnBack.addActionListener(e -> {
+            this.dispose(); // إغلاق نافذة المكتبة
+            SwingUtilities.invokeLater(() -> new org.example.SplashScreen().setVisible(true));
+        });
+
 
         searchActionPanel.add(btnSearch);
         searchActionPanel.add(btnClearSearch);
@@ -148,7 +148,10 @@ public class LibraryGUI extends JFrame {
         JButton btnUpdate = createSystemButton("Update Stock");
         JButton btnDelete = new JButton("Purge Record");
         styleDangerButton(btnDelete);
-        
+
+        controlPanel.add(btnBack);
+        controlPanel.add(Box.createVerticalStrut(15)); // مسافة فاصلة بين زر العودة وباقي القائمة
+
         controlPanel.add(btnAdd);
         controlPanel.add(btnUpdate);
         controlPanel.add(btnDelete);

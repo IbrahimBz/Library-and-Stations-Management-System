@@ -1,0 +1,13 @@
+# STATIONS
+STATION Damascus CODE:DAM
+STATION Homs CODE:HOM
+STATION Aleppo CODE:ALE
+STATION Daraa CODE:DAR
+STATION Tartous CODE:TAR
+STATION Latakia CODE:LAT
+# EDGES
+Damascus -> Homs(120), Daraa(90)
+Homs -> Tartous(95), Aleppo(180)
+Aleppo -> Latakia(170)
+Daraa -> Damascus(90)
+Tartous -> Latakia(100)
