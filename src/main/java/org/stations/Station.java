@@ -7,7 +7,6 @@ public class Station {
 
     private String name;
     private String code;
-    // المسارات المتصلة: المحطة الهدف -> المسافة
     private Map<Station, Integer> connections;
 
     public Station(String name, String code) {

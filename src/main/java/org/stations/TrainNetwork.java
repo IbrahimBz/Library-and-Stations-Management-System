@@ -8,7 +8,7 @@ public class TrainNetwork {
     private Map<String, Station> stations;
 
     public TrainNetwork() {
-        this.stations = new LinkedHashMap<>(); // LinkedHashMap للحفاظ على ترتيب الإدخال
+        this.stations = new LinkedHashMap<>();
     }
 
     public Map<String, Station> getStations() {
@@ -29,9 +29,7 @@ public class TrainNetwork {
         }
     }
 
-    // =========================================================
-    // 2. Export: تصدير الشبكة إلى ملف نصي بما فيها المحطات المعزولة
-    // =========================================================
+
     public void exportToFile(String filename) throws IOException {
         PrintWriter out = new PrintWriter(new FileWriter(filename));
 
@@ -58,9 +56,7 @@ public class TrainNetwork {
         out.close();
     }
 
-    // =========================================================
-    // 2. Import: استيراد الشبكة من ملف نصي مع حفظ الرمز الأصلي
-    // =========================================================
+
     public void importFromFile(String filename) throws IOException {
         stations.clear();
         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -114,9 +110,7 @@ public class TrainNetwork {
         }
     }
 
-    // =========================================================
-    // 3. تصدير رسم الشبكة إلى ملف نصي (ASCII Art)
-    // =========================================================
+
     public void exportGraphToTextFile(String filename) throws IOException {
         PrintWriter out = new PrintWriter(new FileWriter(filename));
         out.println("========================================");
@@ -151,9 +145,7 @@ public class TrainNetwork {
         out.close();
     }
 
-    // =========================================================
-    // 4. أقصر طريق - Dijkstra (مُصحَّح)
-    // =========================================================
+
     public List<String> shortestPath(String start, String end) {
         if (!stations.containsKey(start) || !stations.containsKey(end)) return null;
 
@@ -167,7 +159,6 @@ public class TrainNetwork {
         Station startStation = stations.get(start);
         distances.put(startStation, 0);
 
-        // ✅ استخدام الـ Heap اليدوي
         MinHeapPQ pq = new MinHeapPQ(stations.size() * 10);
         pq.offer(0, startStation);
 
@@ -208,9 +199,7 @@ public class TrainNetwork {
         return path;
     }
 
-    // =========================================================
-    // 5. فحص الدورة المغلقة - DFS
-    // =========================================================
+    //  فحص الدورة المغلقة DFS
     public boolean hasCycle() {
         Set<Station> visited = new HashSet<>();
         Set<Station> recStack = new HashSet<>();
@@ -236,9 +225,6 @@ public class TrainNetwork {
     }
 
 
-    // =========================================================
-    // حذف محطة: يزيلها من القائمة ويزيل كل المسارات المتصلة بها
-    // =========================================================
     public boolean removeStation(String name) {
         Station toRemove = stations.remove(name);
         if (toRemove == null) return false;
@@ -248,9 +234,6 @@ public class TrainNetwork {
         return true;
     }
 
-    // =========================================================
-    // حذف مسار بين محطتين
-    // =========================================================
     public boolean removeEdge(String from, String to) {
         Station s1 = stations.get(from);
         Station s2 = stations.get(to);
@@ -258,9 +241,7 @@ public class TrainNetwork {
         return s1.getConnections().remove(s2) != null;
     }
 
-    // =========================================================
-    // 6. ترتيب المحطات تنازلياً حسب عدد الاتصالات
-    // =========================================================
+
     public List<Station> getStationsSortedByConnections() {
         List<Station> list = new ArrayList<>(stations.values());
         list.sort((s1, s2) -> Integer.compare(s2.getConnections().size(), s1.getConnections().size()));

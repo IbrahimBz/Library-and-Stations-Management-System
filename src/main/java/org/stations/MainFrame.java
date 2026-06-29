@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
         network.addEdge("Homs",     "Tartous",  95);
         network.addEdge("Aleppo",   "Latakia", 170);
         network.addEdge("Tartous",  "Latakia",  85);
-        network.addEdge("Daraa",    "Damascus", 90); // ← creates a cycle for testing
+        network.addEdge("Daraa",    "Damascus", 90);
     }
 
     public MainFrame() {
@@ -44,27 +44,23 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // اللوحة الجانبية للأزرار
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
         controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         controlPanel.setPreferredSize(new Dimension(200, 0));
 
-        // --- أزرار المحطات ---
         JLabel lblStations = new JLabel("── المحطات ──");
         lblStations.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton btnAddStation    = new JButton("إضافة / تعديل محطة");
         JButton btnDeleteStation = new JButton("حذف محطة");          // ✅ جديد
 
-        // --- أزرار المسارات ---
         JLabel lblEdges = new JLabel("── المسارات ──");
         lblEdges.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton btnAddEdge    = new JButton("إضافة مسار");
         JButton btnDeleteEdge = new JButton("حذف مسار");             // ✅ جديد
 
-        // --- أزرار الملفات ---
         JLabel lblFiles = new JLabel("── الملفات ──");
         lblFiles.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -72,7 +68,6 @@ public class MainFrame extends JFrame {
         JButton btnExport         = new JButton("تصدير (Export)");
         JButton btnExportGraph    = new JButton("تصدير رسم الشبكة");  // ✅ جديد - النقطة 3
 
-        // --- أزرار الخوارزميات ---
         JLabel lblAlgo = new JLabel("── الخوارزميات ──");
         lblAlgo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -80,7 +75,6 @@ public class MainFrame extends JFrame {
         JButton btnCheckCycle    = new JButton("فحص دورة مغلقة");
         JButton btnSortStations  = new JButton("ترتيب المحطات");
 
-        // إضافة كل العناصر
         Dimension btnSize = new Dimension(180, 35);
         for (JButton btn : new JButton[]{btnAddStation, btnDeleteStation,
                 btnAddEdge, btnDeleteEdge,
@@ -121,7 +115,6 @@ public class MainFrame extends JFrame {
         controlPanel.add(Box.createVerticalStrut(5));
         controlPanel.add(btnSortStations);
 
-        // منطقة الإخراج
         logArea = new JTextArea(8, 30);
         logArea.setEditable(false);
         logArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
@@ -131,9 +124,7 @@ public class MainFrame extends JFrame {
         add(visualizer, BorderLayout.CENTER);
         add(logScroll, BorderLayout.SOUTH);
 
-        // ===================== أحداث الأزرار =====================
 
-        // إضافة محطة
         btnAddStation.addActionListener(e -> {
             String name = JOptionPane.showInputDialog(this, "أدخل اسم المحطة:");
             String code = JOptionPane.showInputDialog(this, "أدخل رمز المحطة:");
@@ -144,7 +135,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // حذف محطة ✅ جديد
         btnDeleteStation.addActionListener(e -> {
             String name = JOptionPane.showInputDialog(this, "أدخل اسم المحطة للحذف:");
             if (name != null && !name.isEmpty()) {
@@ -158,7 +148,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // إضافة مسار
         btnAddEdge.addActionListener(e -> {
             String from = JOptionPane.showInputDialog(this, "من محطة:");
             String to   = JOptionPane.showInputDialog(this, "إلى محطة:");
@@ -174,7 +163,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // حذف مسار ✅ جديد
         btnDeleteEdge.addActionListener(e -> {
             String from = JOptionPane.showInputDialog(this, "من محطة:");
             String to   = JOptionPane.showInputDialog(this, "إلى محطة:");
@@ -189,7 +177,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // استيراد
         btnImport.addActionListener(e -> {
             try {
                 network.importFromFile("network.txt");
@@ -200,7 +187,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // تصدير
         btnExport.addActionListener(e -> {
             try {
                 network.exportToFile("network.txt");
@@ -210,7 +196,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // تصدير رسم الشبكة ✅ جديد - النقطة 3
         btnExportGraph.addActionListener(e -> {
             try {
                 network.exportGraphToTextFile("graph_map.txt");
@@ -233,7 +218,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // فحص الدورة
         btnCheckCycle.addActionListener(e -> {
             boolean hasCycle = network.hasCycle();
             log(hasCycle
@@ -241,7 +225,6 @@ public class MainFrame extends JFrame {
                 : "✅ الشبكة لا تحتوي على دورة مغلقة.");
         });
 
-        // ترتيب المحطات
         btnSortStations.addActionListener(e -> {
             List<Station> sorted = network.getStationsSortedByConnections();
             log("── ترتيب المحطات حسب الاتصالات ──");
@@ -256,7 +239,5 @@ public class MainFrame extends JFrame {
         logArea.setCaretPosition(logArea.getDocument().getLength());
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
-    }
+
 }
