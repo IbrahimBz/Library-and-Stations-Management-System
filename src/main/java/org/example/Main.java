@@ -1,14 +1,9 @@
 package org.example;
 
-import org.stations.MainFrame;
-
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
-
-
+        SwingUtilities.invokeLater(() -> new SplashScreen().setVisible(true));
     }
 }
