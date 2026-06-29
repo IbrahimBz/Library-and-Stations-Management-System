@@ -6,13 +6,37 @@ import java.util.List;
 
 public class MainFrame extends JFrame {
 
+
+
     private TrainNetwork network;
     private NetworkVisualizer visualizer;
     private JTextArea logArea;
 
+
+
+    private void loadDefaultNetwork() {
+        network.addStation("Damascus", "DAM");
+        network.addStation("Homs",     "HOM");
+        network.addStation("Aleppo",   "ALE");
+        network.addStation("Daraa",    "DAR");
+        network.addStation("Tartous",  "TAR");
+        network.addStation("Latakia",  "LAT");
+
+
+        network.addEdge("Damascus", "Homs",    120);
+        network.addEdge("Damascus", "Daraa",    90);
+        network.addEdge("Homs",     "Aleppo",  180);
+        network.addEdge("Homs",     "Tartous",  95);
+        network.addEdge("Aleppo",   "Latakia", 170);
+        network.addEdge("Tartous",  "Latakia",  85);
+        network.addEdge("Daraa",    "Damascus", 90); // ← creates a cycle for testing
+    }
+
     public MainFrame() {
         network = new TrainNetwork();
         visualizer = new NetworkVisualizer(network);
+
+        loadDefaultNetwork();
 
         setTitle("نظام إدارة شبكة القطارات");
         setSize(1100, 750);

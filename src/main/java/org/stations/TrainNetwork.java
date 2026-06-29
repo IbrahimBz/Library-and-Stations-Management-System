@@ -157,11 +157,9 @@ public class TrainNetwork {
     public List<String> shortestPath(String start, String end) {
         if (!stations.containsKey(start) || !stations.containsKey(end)) return null;
 
-        // استخدام Map.Entry لتجنب مشكلة PriorityQueue مع القيم المتغيرة
-        Map<Station, Integer> distances = new HashMap<>();
+        Map<Station, Integer> distances   = new HashMap<>();
         Map<Station, Station> predecessors = new HashMap<>();
 
-        // تهيئة المسافات بـ MAX_VALUE
         for (Station s : stations.values()) {
             distances.put(s, Integer.MAX_VALUE);
         }
@@ -169,41 +167,37 @@ public class TrainNetwork {
         Station startStation = stations.get(start);
         distances.put(startStation, 0);
 
-        // PriorityQueue تعمل على أزواج (مسافة، محطة) لتجنب الخطأ القديم
-        PriorityQueue<Map.Entry<Integer, Station>> pq = new PriorityQueue<>(
-            Comparator.comparingInt(Map.Entry::getKey)
-        );
-        pq.offer(new AbstractMap.SimpleEntry<>(0, startStation));
+        // ✅ استخدام الـ Heap اليدوي
+        MinHeapPQ pq = new MinHeapPQ(stations.size() * 10);
+        pq.offer(0, startStation);
 
         Set<Station> visited = new HashSet<>();
 
         while (!pq.isEmpty()) {
-            Map.Entry<Integer, Station> curr = pq.poll();
-            Station current = curr.getValue();
-            int currDist = curr.getKey();
+            MinHeapPQ.Entry curr = pq.poll(); // ← يسحب الأقل مسافة
+            Station current = curr.station;
 
-            if (visited.contains(current)) continue; // تجاهل النسخ القديمة
+            if (visited.contains(current)) continue;
             visited.add(current);
 
             if (current.getName().equals(end)) break;
 
             for (Map.Entry<Station, Integer> entry : current.getConnections().entrySet()) {
                 Station neighbor = entry.getKey();
-                int weight = entry.getValue();
-                int newDist = currDist + weight;
+                int newDist = curr.distance + entry.getValue();
 
                 if (newDist < distances.get(neighbor)) {
                     distances.put(neighbor, newDist);
                     predecessors.put(neighbor, current);
-                    pq.offer(new AbstractMap.SimpleEntry<>(newDist, neighbor));
+                    pq.offer(newDist, neighbor); // ← نضيف بالمسافة الجديدة
                 }
             }
         }
 
+        // إعادة بناء المسار
         Station endStation = stations.get(end);
         if (distances.get(endStation) == Integer.MAX_VALUE) return null;
 
-        // إعادة بناء المسار
         LinkedList<String> path = new LinkedList<>();
         Station step = endStation;
         while (step != null) {
